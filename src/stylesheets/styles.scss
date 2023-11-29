@@ -1,0 +1,26 @@
+/* Variables */
+
+$primary-bg-color: #e9faff;
+$primary-text-color: #2E2E2E;
+
+$darkmode-bg-color: #2E2E2E;
+$darkmode-text-color: e9faff;
+
+body {
+    --accent-color: orangered;
+    --background-color: white;
+    --text-color: black;
+    --button-text-color: var(--background-color);
+    --transition-delay: 1s;
+
+    margin-top: 1rem;
+    transition: var(--transition-delay);
+    background-color: var(--background-color);
+    color: var(--text-color);
+}
+
+body.dark {
+    --accent-color: #d0d066;
+    --background-color: #333;
+    --text-color: white;
+}
