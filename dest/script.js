@@ -1,4 +1,5 @@
 "use strict";
+/* Darkmode Toggle */
 const sunMoonContainer = document.querySelector(".sun-moon-container");
 const toggleBtn = document.querySelector(".theme-toggle-button");
 toggleBtn.addEventListener("click", () => {

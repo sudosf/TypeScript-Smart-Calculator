@@ -1,16 +1,16 @@
 /* Variables */
 
-$primary-bg-color: #e9faff;
+$primary-bg-color: #f6fdff;
 $primary-text-color: #2E2E2E;
 
-$darkmode-bg-color: #2E2E2E;
-$darkmode-text-color: e9faff;
+$darkmode-bg-color: #333;
+$darkmode-text-color: white;
 
 body {
-    --accent-color: orangered;
-    --background-color: white;
-    --text-color: black;
-    --button-text-color: var(--background-color);
+    --accent-color: #ffd900;
+    --background-color: $primary-bg-color;
+    --text-color: $primary-text-color;
+    --button-text-color: $primary-bg-color;
     --transition-delay: 1s;
 
     margin-top: 1rem;
@@ -20,7 +20,18 @@ body {
 }
 
 body.dark {
-    --accent-color: #d0d066;
+    --accent-color: cyan;
     --background-color: #333;
-    --text-color: white;
+    --text-color: #333;
+
+    h1 {
+        color: white;
+    }
 }
+
+// .container .row .col-12 .card .card-body div .btn.equal {
+//     background-color: #0000FF;
+//     width: 100%;
+//     margin-top: 2em;
+//     border: none; 
+// }

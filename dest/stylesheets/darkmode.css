@@ -1,9 +1,9 @@
 /* Variables */
 body {
-  --accent-color: orangered;
-  --background-color: white;
-  --text-color: black;
-  --button-text-color: var(--background-color);
+  --accent-color: #ffd900;
+  --background-color: $primary-bg-color;
+  --text-color: $primary-text-color;
+  --button-text-color: $primary-bg-color;
   --transition-delay: 1s;
   margin-top: 1rem;
   transition: var(--transition-delay);
@@ -12,9 +12,12 @@ body {
 }
 
 body.dark {
-  --accent-color: #d0d066;
+  --accent-color: cyan;
   --background-color: #333;
-  --text-color: white;
+  --text-color: #333;
+}
+body.dark h1 {
+  color: white;
 }
 
 .theme-toggle-button {
@@ -44,7 +47,8 @@ body.dark {
 .darkmode-container {
   display: flex;
   align-items: center;
-  justify-content: space-around;
+  justify-content: space-between;
+  margin: 1em 1.2em;
 }
 
 .sun-moon-container {
@@ -56,6 +60,7 @@ body.dark {
 .sun,
 .moon {
   fill: var(--accent-color);
+  transition: opacity var(--transition-delay);
 }
 
 .sun {
