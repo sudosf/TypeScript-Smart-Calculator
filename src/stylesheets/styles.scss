@@ -8,6 +8,7 @@ body {
     --background-color: $primary-bg-color;
     --text-color: $primary-text-color;
     --button-text-color: $primary-bg-color;
+    --border-color: rgba(179, 179, 179, 0.445);
     --transition-delay: 1s;
 
     margin-top: 1rem;
@@ -31,9 +32,97 @@ body.dark {
         background-color: var(--background-color);
     }
 
-    .card {
-        border: 1px solid grey;
-        border-radius: .2em;
+    button.equal {
+        background-color: var(--accent-color);
+        color: var(--background-color);
     }
 
+    .darkmode-container {
+        box-shadow: 0 5px 1px 2px rgba(109, 109, 109, 0.274); /* Adjust as needed */
+    }
+}
+
+.card {
+    border: 1px solid grey;
+    border-radius: .2em;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.calc-container {
+    border: 1px solid gray;
+    position: relative;
+    align-items: center;
+    width: 100%;
+    max-width: 25rem;
+    border-radius: .3rem;
+    padding: 1rem 1.5rem;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.05);
+    border: 1px solid var(--border-color);
+    -webkit-background-clip: padding-box; /* for Safari */
+    background-clip: padding-box; /* for IE9+, Firefox 4+, Opera, Chrome */
+
+}
+
+.input-display  {
+    margin: 0;
+    height: 40px;
+    width: 100%;
+    outline: none;
+    text-align: right;
+    margin-bottom: 10px;
+    font-size: 25px;
+    color: #000e1a;
+    border: 1px solid var(--border-color);
+    -webkit-background-clip: padding-box; /* for Safari */
+    background-clip: padding-box; /* for IE9+, Firefox 4+, Opera, Chrome */
+    border-top: none;
+    pointer-events: none;
+}
+
+.input-result {
+    margin: 0;
+    height: 20px;
+    width: 100%;
+    outline: none;
+    text-align: right;
+    font-size: 15px;
+    color: #000e1a;
+    border: 1px solid var(--border-color);
+    -webkit-background-clip: padding-box; /* for Safari */
+    background-clip: padding-box; /* for IE9+, Firefox 4+, Opera, Chrome */
+    border-bottom: none;
+}
+
+.btns {
+    display: grid;
+    grid-gap: .25em;
+    grid-template-columns: repeat(4, 1fr);
+
+    button {
+        padding: 0.5em 1.5em;
+        border-radius: .3em;
+        border: none;
+        font-size: 1em;
+        cursor: pointer;
+        background-color: #eee;
+    }
+    
+    button:active {
+        transform: scale(0.99);
+    }
+
+    button.equal {
+        background-color: #2a2c30;
+        color: var(--accent-color);
+    }
+
+    .operator {
+        color: #2f9fff;
+    }
 }
