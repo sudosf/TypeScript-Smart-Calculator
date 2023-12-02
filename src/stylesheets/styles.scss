@@ -29,9 +29,9 @@ body.dark {
         color: white;
     }
 
-    .container,
-    .card,
-    .card-body {
+    main
+    , .card
+    , .card-body {
         background-color: var(--background-color);
     }
 
@@ -50,7 +50,7 @@ body.dark {
     border-radius: 0.2em;
 }
 
-.container {
+main {
     display: flex;
     flex-direction: column;
     align-items: center;
