@@ -7,20 +7,23 @@ class Calculator {
         this.currExpression = "";
         this.prevExpression = "0";
         this.expressionError = "";
-        this.prevResult = 0;
-        this.currResult = 0;
+        this.result = 0;
     } // constructor
     calculate(expression = this.currExpression) {
         // evaluate expression inside parenthesis
-        this.currExpression = this.resolveParenthesis(expression);
+        expression = this.resolveParenthesis(expression);
         // evaluate exponents
-        this.currExpression = this.resolveExponent(expression);
+        expression = this.resolveExponent(expression);
         // evaluate multiplication and division first
+        expression = this.resolveMulAndDiv(expression);
         // evaluate addition and subtraction
+        expression = this.resolveAddAndSub(expression);
+        this.currExpression = expression;
+        this.result = parseFloat(expression);
+        console.log("calc: " + this.currExpression);
         return 0;
     } // calculate
     resolveParenthesis(expression) {
-        let resolvedExpression = "";
         while (expression.includes("(")) {
             const startIndex = expression.lastIndexOf("(");
             const endIndex = expression.indexOf(")", startIndex);
@@ -31,36 +34,70 @@ class Calculator {
             const subExpression = expression.slice(startIndex + 1, endIndex);
             const result = this.calculate(subExpression).toString();
             // update expression with resolved parenthesis result
-            resolvedExpression =
+            expression =
                 expression.slice(0, startIndex) +
                     result +
                     expression.slice(endIndex + 1);
         }
-        return resolvedExpression !== "" ? resolvedExpression : expression;
+        console.log("parenthesis: " + expression);
+        return expression;
     } // resolveParenthesis
     resolveExponent(expression) {
-        let resolvedExpression = "";
         while (expression.includes("^")) {
             const [base, exponent] = expression
                 .split("^")
                 .map(parseFloat);
             const result = Math.pow(base, exponent).toString();
-            resolvedExpression = expression.replace(`${base}^${exponent}`, result);
+            expression = expression.replace(`${base}^${exponent}`, result);
         }
-        return resolvedExpression !== "" ? resolvedExpression : expression;
+        console.log("exp: " + expression);
+        return expression;
     } // resolveExponent
     resolveMulAndDiv(expression) {
-        let resolvedExpression = "";
         while (expression.match(/[*/]/)) {
-            const match = expression.match(/([\d.]+)([*/])([/d.]+)/);
+            const match = expression.match(/([\d.]+)([*/])([\d.]+)/);
+            if (match) {
+                const [_, operand1, operator, operand2] = match;
+                let result = 0;
+                if (operator === "*") {
+                    result = parseFloat(operand1) * parseFloat(operand2);
+                }
+                else {
+                    parseFloat(operand2) !== 0
+                        ? (result = parseFloat(operand1) / parseFloat(operand2))
+                        : (this.expressionError = "division by zero error");
+                }
+                expression = expression.replace(match[0], result.toString());
+            }
+            else {
+                break;
+            }
         }
-        return resolvedExpression !== "" ? resolvedExpression : expression;
+        console.log("multi: " + expression);
+        return expression;
     } //resolveMulAndDiv
+    resolveAddAndSub(expression) {
+        // Perform addition and subtraction
+        while (expression.match(/[+\-]/)) {
+            const match = expression.match(/([\d.]+)([+\-])([\d.]+)/);
+            if (match) {
+                const [_, operand1, operator, operand2] = match;
+                const result = operator === "+"
+                    ? parseFloat(operand1) + parseFloat(operand2)
+                    : parseFloat(operand1) - parseFloat(operand2);
+                expression = expression.replace(match[0], result.toString());
+            }
+        }
+        console.log("add: " + expression);
+        return expression;
+    } // resolveAddAndSub
     appendCurrExpression(char) {
         if (this.isValidInput(char)) {
             this.expressionError = ""; // reset error message
             switch (char) {
+                case "Enter":
                 case "=":
+                    calculator.setPrevExpression(this.getCurrExpression());
                     console.log(this.calculate());
                     break;
                 case "AC":
@@ -72,7 +109,7 @@ class Calculator {
                 default:
                     if (this.isOperator(char)) {
                         // ensure operators are separated by spaces
-                        this.currExpression += ` ${char} `;
+                        this.currExpression += `${char}`;
                     }
                     else {
                         this.currExpression === "0"
@@ -81,6 +118,7 @@ class Calculator {
                     }
                     break;
             }
+            updateDisplay();
         }
         else {
             this.expressionError = "please enter valid input";
@@ -96,6 +134,13 @@ class Calculator {
     getExpressionError() {
         return this.expressionError;
     } // getExpressionError
+    getResult() {
+        return this.result.toString();
+    }
+    /* Setters */
+    setPrevExpression(expression) {
+        this.prevExpression = this.currExpression;
+    }
     /* public helper functions */
     isValidInput(input) {
         return (this.isOperator(input) ||
@@ -108,7 +153,7 @@ class Calculator {
         return operators.includes(char);
     } // isOperator
     isValidKey(char) {
-        const keys = ["(", ")", "Backspace", "AC", "=", "^", "."];
+        const keys = ["(", ")", "Backspace", "AC", "=", "^", ".", "Enter"];
         return keys.includes(char);
     } // isValidKey
     isNumber(char) {
@@ -124,7 +169,7 @@ const errorMessage = document.querySelector("#errorMessage");
 // check for user inputs from keyboard
 inputDisplay.addEventListener("keydown", function (event) {
     const key = event.key; // "a", "1", "Shift", etc.
-    // console.log(key);
+    console.log(key);
     appendCharacter(key);
 });
 function appendCharacter(char) {
@@ -133,7 +178,7 @@ function appendCharacter(char) {
 }
 function updateDisplay() {
     inputDisplay.value = calculator.getCurrExpression();
-    inputPrevDisplay.value = calculator.getPrevExpression();
+    inputPrevDisplay.value = `${calculator.getPrevExpression()} = ${calculator.getResult()}`;
     errorMessage.innerHTML = calculator.getExpressionError();
     // toggle error message visibility
     if (calculator.getExpressionError() == "") {
