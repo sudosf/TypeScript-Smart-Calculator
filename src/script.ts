@@ -2,7 +2,8 @@ window.addEventListener("DOMContentLoaded", () => {
     updateDisplay();
 });
 
-class Calculator {
+// export class for testing
+export class Calculator {
     private currExpression: string;
     private prevExpression: string;
     private expressionError: string;
