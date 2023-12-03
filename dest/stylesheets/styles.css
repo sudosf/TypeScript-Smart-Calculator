@@ -125,7 +125,7 @@ body.dark .darkmode-container {
 
 .error {
   border: 1px solid;
-  padding: 1em 2em;
+  padding: 1.01em 2em;
   background-repeat: no-repeat;
   background-position: 10px center;
 }
