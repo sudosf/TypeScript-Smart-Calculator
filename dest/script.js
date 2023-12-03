@@ -9,10 +9,53 @@ class Calculator {
         this.expressionError = "";
         this.prevResult = 0;
         this.currResult = 0;
-    }
-    calculate() {
-        return "in progress";
-    }
+    } // constructor
+    calculate(expression = this.currExpression) {
+        // evaluate expression inside parenthesis
+        this.currExpression = this.resolveParenthesis(expression);
+        // evaluate exponents
+        this.currExpression = this.resolveExponent(expression);
+        // evaluate multiplication and division first
+        // evaluate addition and subtraction
+        return 0;
+    } // calculate
+    resolveParenthesis(expression) {
+        let resolvedExpression = "";
+        while (expression.includes("(")) {
+            const startIndex = expression.lastIndexOf("(");
+            const endIndex = expression.indexOf(")", startIndex);
+            // mismatched parenthesis, exit loop
+            if (startIndex === -1 || endIndex === -1)
+                break;
+            // get sub-expression inside parenthesis
+            const subExpression = expression.slice(startIndex + 1, endIndex);
+            const result = this.calculate(subExpression).toString();
+            // update expression with resolved parenthesis result
+            resolvedExpression =
+                expression.slice(0, startIndex) +
+                    result +
+                    expression.slice(endIndex + 1);
+        }
+        return resolvedExpression !== "" ? resolvedExpression : expression;
+    } // resolveParenthesis
+    resolveExponent(expression) {
+        let resolvedExpression = "";
+        while (expression.includes("^")) {
+            const [base, exponent] = expression
+                .split("^")
+                .map(parseFloat);
+            const result = Math.pow(base, exponent).toString();
+            resolvedExpression = expression.replace(`${base}^${exponent}`, result);
+        }
+        return resolvedExpression !== "" ? resolvedExpression : expression;
+    } // resolveExponent
+    resolveMulAndDiv(expression) {
+        let resolvedExpression = "";
+        while (expression.match(/[*/]/)) {
+            const match = expression.match(/([\d.]+)([*/])([/d.]+)/);
+        }
+        return resolvedExpression !== "" ? resolvedExpression : expression;
+    } //resolveMulAndDiv
     appendCurrExpression(char) {
         if (this.isValidInput(char)) {
             this.expressionError = ""; // reset error message
@@ -42,35 +85,35 @@ class Calculator {
         else {
             this.expressionError = "please enter valid input";
         }
-        //this.currExpression.replace(/[^0-9+-/*]/g, "");
-    }
+    } // appendCurrExpression
+    /* Getters */
     getCurrExpression() {
         return this.currExpression;
-    }
+    } // getCurrExpression
     getPrevExpression() {
         return this.prevExpression;
-    }
+    } // getPrevExpression
     getExpressionError() {
         return this.expressionError;
-    }
-    // public helper functions
+    } // getExpressionError
+    /* public helper functions */
     isValidInput(input) {
         return (this.isOperator(input) ||
             this.isValidKey(input) ||
             this.isNumber(input));
-    }
-    // private helper functions
+    } // isValidInput
+    /* private helper functions */
     isOperator(char) {
         const operators = ["+", "-", "*", "/"];
         return operators.includes(char);
-    }
+    } // isOperator
     isValidKey(char) {
-        const keys = ["(", ")", "Backspace", "AC", "="];
+        const keys = ["(", ")", "Backspace", "AC", "=", "^", "."];
         return keys.includes(char);
-    }
+    } // isValidKey
     isNumber(char) {
         return isFinite(parseInt(char));
-    }
+    } // isNumber
 } // Calculator class
 let calculator = new Calculator();
 // current expression display

@@ -49,7 +49,7 @@
         </header>
 
         <main class="">
-            <h1 class="text-center mt-3">Scientific Calculator</h1>
+            <h1>Scientific Calculator</h1>
 
             <!-- Calculator operations -->
             <div class="calc-container">
@@ -132,7 +132,9 @@
                     <button onclick="appendCharacter('0')" type="button">
                         0
                     </button>
-                    <button type="button" disabled>.</button>
+                    <button onclick="appendCharacter('.')" type="button">
+                        .
+                    </button>
                     <button
                         id="equal"
                         onclick="appendCharacter('=')"
@@ -164,7 +166,9 @@
                     >
                         √
                     </button>
-                    <button type="button" disabled>^</button>
+                    <button onclick="appendCharacter('^')" type="button">
+                        ^
+                    </button>
 
                     <button type="button" disabled>sin</button>
                     <button type="button" disabled>ln</button>
