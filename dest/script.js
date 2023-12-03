@@ -32,7 +32,10 @@ class Calculator {
             }
             // get sub-expression inside parenthesis
             const subExpression = expression.slice(startIndex + 1, endIndex);
-            const result = this.calculate(subExpression).toString();
+            const result = "";
+            if (subExpression !== "") {
+                const result = this.calculate(subExpression).toString();
+            }
             // update expression with resolved parenthesis result
             expression =
                 expression.slice(0, startIndex) +

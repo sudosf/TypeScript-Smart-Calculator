@@ -40,7 +40,6 @@ class Calculator {
             if (startIndex === -1 || endIndex === -1) {
                 this.expressionError = "missing parenthesis";
                 break;
-                
             }
 
             // get sub-expression inside parenthesis
@@ -48,8 +47,11 @@ class Calculator {
                 startIndex + 1,
                 endIndex
             );
-            const result: string = this.calculate(subExpression).toString();
 
+            const result: string = "";
+            if (subExpression !== "") {
+                const result: string = this.calculate(subExpression).toString();
+            }
             // update expression with resolved parenthesis result
             expression =
                 expression.slice(0, startIndex) +
@@ -116,7 +118,7 @@ class Calculator {
                         : parseFloat(operand1) - parseFloat(operand2);
 
                 expression = expression.replace(match[0], result.toString());
-            }else {
+            } else {
                 break;
             }
         }
