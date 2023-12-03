@@ -144,10 +144,78 @@ body.dark {
     padding: 1em 2em;
     background-repeat: no-repeat;
     background-position: 10px center;
+    display: none;
 }
 
 .error {
     color: #d8000c;
     background-color: #ffbaba;
     background-image: url("/public/GnyDvKN.png");
+}
+
+/* Darkmode styles */
+
+.theme-toggle-button {
+    background-color: var(--accent-color);
+    color: var(--button-text-color);
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    padding: 0.5em 1em;
+    border-radius: 0.3em;
+    border: none;
+    outline: none;
+    transition: var(--transition-delay);
+    transform: scale(1);
+}
+
+.theme-toggle-button .icon {
+    margin: .5em;
+}
+
+.theme-toggle-button:hover,
+.theme-toggle-button:focus {
+    transform: scale(1.1);
+}
+
+.darkmode-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 1.3rem;
+    width: 60%;
+    margin: auto;
+    box-shadow: 2px 3px 5px rgba(109, 109, 109, 0.274); /* Adjust as needed */
+}
+
+.sun-moon-container {
+    --rotation: 0;
+
+    transform: rotate(calc(var(--rotation) * 1deg));
+    transition: transform var(--transition-delay);
+}
+
+.sun,
+.moon {
+    fill: var(--accent-color);
+    transition: opacity var(--transition-delay);
+}
+
+.sun {
+    opacity: 1;
+}
+
+.dark .sun {
+    opacity: 0;
+}
+
+.moon {
+    opacity: 0;
+    transform: rotate(180deg);
+}
+
+.dark .moon {
+    opacity: 1;
 }
