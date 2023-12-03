@@ -104,8 +104,8 @@ class Calculator {
 
     public resolveAddAndSub(expression: string): string {
         // Perform addition and subtraction
-        while (expression.match(/[+\-]/)) {
-            const match = expression.match(/([\d.]+)([+\-])([\d.]+)/);
+        while (expression.match(/[+-]/)) {
+            const match = expression.match(/([\d.]+)([+-])([\d.]+)/);
 
             if (match) {
                 const [_, operand1, operator, operand2]: string[] = match;
@@ -116,6 +116,8 @@ class Calculator {
                         : parseFloat(operand1) - parseFloat(operand2);
 
                 expression = expression.replace(match[0], result.toString());
+            }else {
+                break;
             }
         }
         console.log("add: " + expression);
@@ -146,7 +148,7 @@ class Calculator {
                         // ensure operators are separated by spaces
                         this.currExpression += `${char}`;
                     } else {
-                        this.currExpression === "0"
+                        this.currExpression === ""
                             ? (this.currExpression = char)
                             : (this.currExpression += char);
                     }
