@@ -48,11 +48,15 @@ class Calculator {
                 endIndex
             );
 
-            const result: string = "";
-            if (subExpression !== "") {
-                const result: string = this.calculate(subExpression).toString();
+            let result: string = "";
+            if (this.isNumber(subExpression)) {
+                result = subExpression;
+            } else {
+                result = this.calculate(subExpression).toString();
             }
-            // update expression with resolved parenthesis result
+
+            // remove parenthesis and....
+            // update expression with resolved result
             expression =
                 expression.slice(0, startIndex) +
                 result +
@@ -68,6 +72,14 @@ class Calculator {
             const [base, exponent]: number[] = expression
                 .split("^")
                 .map(parseFloat);
+
+            if (
+                !this.isNumber(base.toString()) ||
+                !this.isNumber(exponent.toString())
+            ) {
+                this.expressionError = "invalid expression";
+                break;
+            }
             const result: string = Math.pow(base, exponent).toString();
 
             expression = expression.replace(`${base}^${exponent}`, result);
@@ -76,6 +88,20 @@ class Calculator {
 
         return expression;
     } // resolveExponent
+
+    public resolveSqrt(expression: string): number {
+        if (expression === "") {
+            this.expressionError = "empty expression";
+            return 0;
+        } else if (!this.isNumber(expression)) {
+            this.expressionError = "invalid square operation"
+            return 0;
+        }
+
+        const result: number = Math.sqrt(parseFloat(expression));
+        this.currExpression = result.toString();
+        return result;
+    } // resolveSqrt
 
     public resolveMulAndDiv(expression: string): string {
         while (expression.match(/[*/]/)) {
@@ -110,7 +136,24 @@ class Calculator {
             const match = expression.match(/([\d.]+)([+-])([\d.]+)/);
 
             if (match) {
-                const [_, operand1, operator, operand2]: string[] = match;
+                let [_, operand1, operator, operand2]: string[] = match;
+
+                // if expression has a preceding negative number
+                // negate operand and remove operator
+                // specifying negative/positive value
+                let firstChar: string = expression.charAt(0);
+                switch (firstChar) {
+                    case "+":
+                        // remove preceding operator
+                        expression = this.replaceFirstChar(expression, "");
+                        break;
+                    case "-":
+                        operand1 = (parseFloat(operand1) * -1).toString();
+                        expression = this.replaceFirstChar(expression, "");
+                        break;
+                    default:
+                        break;
+                }
 
                 const result: number =
                     operator === "+"
@@ -133,11 +176,10 @@ class Calculator {
             switch (char) {
                 case "Enter":
                 case "=":
-                    calculator.setPrevExpression(this.getCurrExpression());
+                    this.prevExpression = this.currExpression;
 
-                    const result: number = calculator.calculate();
-                    calculator.setResult(result);
-                    updateDisplay();
+                    const result: number = this.calculate();
+                    this.result = result;
                     break;
                 case "AC":
                     this.currExpression = "";
@@ -145,15 +187,18 @@ class Calculator {
                 case "Backspace":
                     this.currExpression = this.currExpression.slice(0, -1);
                     break;
+                case "pie":
+                    this.currExpression += Math.PI.toString();
+                    break;
+                case "sqrt":
+                    const sqrtResult: number = this.resolveSqrt(this.currExpression);
+                    this.result = sqrtResult;
+                    break;
                 default:
-                    if (this.isOperator(char)) {
-                        // ensure operators are separated by spaces
-                        this.currExpression += `${char}`;
-                    } else {
-                        this.currExpression === ""
-                            ? (this.currExpression = char)
-                            : (this.currExpression += char);
-                    }
+                    this.currExpression === ""
+                        ? (this.currExpression = char)
+                        : (this.currExpression += char);
+
                     break;
             }
             updateDisplay();
@@ -204,13 +249,28 @@ class Calculator {
     } // isOperator
 
     private isValidKey(char: string): boolean {
-        const keys = ["(", ")", "Backspace", "AC", "=", "^", ".", "Enter"];
+        const keys = [
+            "(",
+            ")",
+            "Backspace",
+            "AC",
+            "=",
+            "^",
+            ".",
+            "Enter",
+            "pie",
+            "sqrt",
+        ];
         return keys.includes(char);
     } // isValidKey
 
     private isNumber(char: string): boolean {
-        return isFinite(parseInt(char));
+        return typeof parseFloat(char) === 'number' && !isNaN(parseFloat(char));
     } // isNumber
+
+    private replaceFirstChar(myString: string, replacement: string): string {
+        return replacement + myString.slice(1);
+    }
 } // Calculator class
 
 let calculator = new Calculator();
@@ -229,7 +289,7 @@ const errorMessage = document.querySelector("#errorMessage") as HTMLElement;
 // check for user inputs from keyboard
 inputDisplay.addEventListener("keydown", function (event: KeyboardEvent) {
     const key: string = event.key; // "a", "1", "Shift", etc.
-    console.log(key);
+    // console.log(key);
     appendCharacter(key);
 });
 
