@@ -19,17 +19,17 @@ class Calculator {
         // evaluate addition and subtraction
         expression = this.resolveAddAndSub(expression);
         this.currExpression = expression;
-        this.result = parseFloat(expression);
-        console.log("calc: " + this.currExpression);
-        return 0;
+        return parseFloat(this.currExpression);
     } // calculate
     resolveParenthesis(expression) {
-        while (expression.includes("(")) {
+        while (expression.includes("(") || expression.includes(")")) {
             const startIndex = expression.lastIndexOf("(");
             const endIndex = expression.indexOf(")", startIndex);
             // mismatched parenthesis, exit loop
-            if (startIndex === -1 || endIndex === -1)
+            if (startIndex === -1 || endIndex === -1) {
+                this.expressionError = "missing parenthesis";
                 break;
+            }
             // get sub-expression inside parenthesis
             const subExpression = expression.slice(startIndex + 1, endIndex);
             const result = this.calculate(subExpression).toString();
@@ -98,7 +98,9 @@ class Calculator {
                 case "Enter":
                 case "=":
                     calculator.setPrevExpression(this.getCurrExpression());
-                    console.log(this.calculate());
+                    const result = calculator.calculate();
+                    calculator.setResult(result);
+                    updateDisplay();
                     break;
                 case "AC":
                     this.currExpression = "";
@@ -136,11 +138,14 @@ class Calculator {
     } // getExpressionError
     getResult() {
         return this.result.toString();
-    }
+    } //getResult
     /* Setters */
     setPrevExpression(expression) {
         this.prevExpression = this.currExpression;
-    }
+    } // setPrevExpression
+    setResult(result) {
+        this.result = result;
+    } //setResult
     /* public helper functions */
     isValidInput(input) {
         return (this.isOperator(input) ||
@@ -188,7 +193,7 @@ function updateDisplay() {
         errorMessage.style.display = "block";
         setTimeout(function () {
             $("#errorMessage").fadeOut("slow");
-        }, 3000); // <-- time in milliseconds
+        }, 5000); // <-- time in milliseconds
     }
     // TODO:
     // update prevExpression after calculate()
