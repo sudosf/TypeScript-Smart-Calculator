@@ -27,7 +27,8 @@ class Calculator {
             this.expressionError = ""; // reset error message
             switch (char) {
                 case "=":
-                    this.calculate();
+                    console.log(this.calculate());
+                    
                     break;
                 case "AC":
                     this.currExpression = "";
@@ -51,8 +52,6 @@ class Calculator {
         }
 
         //this.currExpression.replace(/[^0-9+-/*]/g, "");
-        console.log(this.currExpression);
-        // console.log();
     }
 
     public getCurrExpression(): string {
@@ -83,7 +82,7 @@ class Calculator {
     }
 
     private isValidKey(char: string): boolean {
-        const keys = ["(", ")", "Backspace", "AC"];
+        const keys = ["(", ")", "Backspace", "AC", "="];
         return keys.includes(char);
     }
 

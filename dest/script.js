@@ -18,7 +18,7 @@ class Calculator {
             this.expressionError = ""; // reset error message
             switch (char) {
                 case "=":
-                    this.calculate();
+                    console.log(this.calculate());
                     break;
                 case "AC":
                     this.currExpression = "";
@@ -43,8 +43,6 @@ class Calculator {
             this.expressionError = "please enter valid input";
         }
         //this.currExpression.replace(/[^0-9+-/*]/g, "");
-        console.log(this.currExpression);
-        // console.log();
     }
     getCurrExpression() {
         return this.currExpression;
@@ -67,7 +65,7 @@ class Calculator {
         return operators.includes(char);
     }
     isValidKey(char) {
-        const keys = ["(", ")", "Backspace", "AC"];
+        const keys = ["(", ")", "Backspace", "AC", "="];
         return keys.includes(char);
     }
     isNumber(char) {
