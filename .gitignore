@@ -1,4 +1,3 @@
 node_modules
 
-dest/stylesheets/darkmode.css.map
-dest/stylesheets/styles.css.map
+*.map
