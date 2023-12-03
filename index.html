@@ -54,8 +54,9 @@
 
             <!-- Calculator operations -->
             <div class="calc-container">
+                <p id="errorMessage" class="error">Error Message</p>
                 <input
-                    id="calc-result"
+                    id="calc-prev-display"
                     type="text"
                     readonly
                     class="input-result"
@@ -64,46 +65,121 @@
 
                 <!-- Calculator Buttons -->
                 <section class="btns">
-                    <button data-value="(" type="button">(</button>
-                    <button data-value=")" type="button">)</button>
-                    <button class="operator" data-value="AC" type="button">AC</button>
-                    <button class="operator" data-value="%" type="button">%</button>
+                    <button onclick="appendCharacter('(')" type="button">
+                        (
+                    </button>
+                    <button onclick="appendCharacter(')')" type="button">
+                        )
+                    </button>
+                    <button
+                        onclick="appendCharacter('AC')"
+                        class="operator"
+                        type="button"
+                    >
+                        AC
+                    </button>
+                    <button class="operator" type="button" disabled>%</button>
 
-                    <button data-value="7" type="button">7</button>
-                    <button data-value="8" type="button">8</button>
-                    <button data-value="9" type="button">9</button>
-                    <button class="operator" data-value="/" type="button">÷</button>
+                    <button onclick="appendCharacter('7')" type="button">
+                        7
+                    </button>
+                    <button onclick="appendCharacter('8')" type="button">
+                        8
+                    </button>
+                    <button onclick="appendCharacter('9')" type="button">
+                        9
+                    </button>
+                    <button
+                        onclick="appendCharacter('/')"
+                        class="operator"
+                        type="button"
+                    >
+                        ÷
+                    </button>
 
-                    <button data-value="4" type="button">4</button>
-                    <button data-value="5" type="button">5</button>
-                    <button data-value="6" type="button">6</button>
-                    <button class="operator" data-value="*" type="button">x</button>
+                    <button onclick="appendCharacter('4')" type="button">
+                        4
+                    </button>
+                    <button onclick="appendCharacter('5')" type="button">
+                        5
+                    </button>
+                    <button onclick="appendCharacter('6')" type="button">
+                        6
+                    </button>
+                    <button
+                        onclick="appendCharacter('*')"
+                        class="operator"
+                        type="button"
+                    >
+                        x
+                    </button>
 
-                    <button data-value="1" type="button">1</button>
-                    <button data-value="2" type="button">2</button>
-                    <button data-value="3" type="button">3</button>
-                    <button class="operator" data-value="-" type="button">-</button>
+                    <button onclick="appendCharacter('1')" type="button">
+                        1
+                    </button>
+                    <button onclick="appendCharacter('2')" type="button">
+                        2
+                    </button>
+                    <button onclick="appendCharacter('3')" type="button">
+                        3
+                    </button>
+                    <button
+                        onclick="appendCharacter('-')"
+                        class="operator"
+                        type="button"
+                    >
+                        -
+                    </button>
 
-                    <button data-value="0" type="button">0</button>
-                    <button data-value="." type="button">.</button>
-                    <button data-value="=" type="button" class="equal">
+                    <button onclick="appendCharacter('0')" type="button">
+                        0
+                    </button>
+                    <button type="button" disabled>.</button>
+                    <button
+                        id="equal"
+                        onclick="appendCharacter('=')"
+                        type="button"
+                        class="operator equal"
+                    >
                         =
                     </button>
-                    <button class="operator"  data-value="+" type="button">+</button>
+                    <button
+                        onclick="appendCharacter('+')"
+                        class="operator"
+                        type="button"
+                    >
+                        +
+                    </button>
 
-                    <button data-value="sin" type="button">sin</button>
-                    <button data-value="ln" type="button">ln</button>
-                    <button data-value="pie" type="button">π</button>
-                    <button data-value="cos" type="button">cos</button>
+                    <button
+                        onclick="appendCharacter('pie')"
+                        type="button"
+                        disabled
+                    >
+                        π
+                    </button>
 
-                    <button data-value="log" type="button">log</button>
-                    <button data-value="e" type="button">e</button>
-                    <button data-value="tan" type="button">tan</button>
-                    <button data-value="sqrt" type="button">√</button>
+                    <button
+                        onclick="appendCharacter('sqrt')"
+                        type="button"
+                        disabled
+                    >
+                        √
+                    </button>
+                    <button type="button" disabled>^</button>
+
+                    <button type="button" disabled>sin</button>
+                    <button type="button" disabled>ln</button>
+                    <button type="button" disabled>cos</button>
+
+                    <button type="button" disabled>log</button>
+                    <button type="button" disabled>tan</button>
                 </section>
             </div>
         </main>
 
         <script src="dest/script.js"></script>
+        <!-- Include jQuery from CDN -->
+        <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     </body>
 </html>
