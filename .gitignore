@@ -1,2 +1,4 @@
 node_modules
-dest/stylesheets/*.map
+
+dest/stylesheets/darkmode.css.map
+dest/stylesheets/styles.css.map
