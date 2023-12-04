@@ -3,7 +3,7 @@ window.addEventListener("DOMContentLoaded", () => {
 });
 
 // export class for testing
-export class Calculator {
+class Calculator {
     private currExpression: string;
     private prevExpression: string;
     private expressionError: string;
