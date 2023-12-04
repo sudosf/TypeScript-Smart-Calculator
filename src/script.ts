@@ -94,11 +94,10 @@ class Calculator {
             this.expressionError = "empty expression";
             return 0;
         } else if (!this.isNumber(expression)) {
-            this.expressionError = "invalid square operation"
+            this.expressionError = "invalid square operation";
             return 0;
-        } else if ( parseFloat(expression) < 0 ) {
+        } else if (parseFloat(expression) < 0) {
             this.expressionError = "invalid negative square operation";
-
         }
 
         const result: number = Math.sqrt(parseFloat(expression));
@@ -194,7 +193,9 @@ class Calculator {
                     this.currExpression += Math.PI.toString();
                     break;
                 case "sqrt":
-                    const sqrtResult: number = this.resolveSqrt(this.currExpression);
+                    const sqrtResult: number = this.resolveSqrt(
+                        this.currExpression
+                    );
                     this.result = sqrtResult;
                     break;
                 default:
@@ -268,7 +269,7 @@ class Calculator {
     } // isValidKey
 
     private isNumber(char: string): boolean {
-        return typeof parseFloat(char) === 'number' && !isNaN(parseFloat(char));
+        return typeof parseFloat(char) === "number" && !isNaN(parseFloat(char));
     } // isNumber
 
     private replaceFirstChar(myString: string, replacement: string): string {

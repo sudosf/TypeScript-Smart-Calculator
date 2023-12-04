@@ -220,7 +220,7 @@ class Calculator {
         return keys.includes(char);
     } // isValidKey
     isNumber(char) {
-        return typeof parseFloat(char) === 'number' && !isNaN(parseFloat(char));
+        return typeof parseFloat(char) === "number" && !isNaN(parseFloat(char));
     } // isNumber
     replaceFirstChar(myString, replacement) {
         return replacement + myString.slice(1);
