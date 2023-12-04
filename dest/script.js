@@ -1,6 +1,12 @@
 "use strict";
 window.addEventListener("DOMContentLoaded", () => {
     updateDisplay();
+    let darkModeStatus = localStorage.getItem("darkModeStatus");
+    // check if darkModeSTATUS is set
+    if (darkModeStatus) {
+        if (darkModeStatus === "enabled")
+            toggleDarkMode();
+    }
 });
 class Calculator {
     constructor() {
@@ -231,6 +237,15 @@ const inputDisplay = document.querySelector("#calc-display");
 // previous expression display
 const inputPrevDisplay = document.querySelector("#calc-prev-display");
 const errorMessage = document.querySelector("#errorMessage");
+const sunMoonContainer = document.querySelector(".sun-moon-container");
+// store darkmode status for page reload
+let darkMode = localStorage.getItem("darkModeStatus");
+const toggleBtn = document.querySelector(".theme-toggle-button");
+toggleBtn.addEventListener("click", () => {
+    toggleDarkMode();
+    const currentRotation = parseInt(getComputedStyle(sunMoonContainer).getPropertyValue("--rotation"));
+    sunMoonContainer.style.setProperty("--rotation", (currentRotation + 180).toString());
+});
 // check for user inputs from keyboard
 inputDisplay.addEventListener("keydown", function (event) {
     event.preventDefault();
@@ -238,6 +253,11 @@ inputDisplay.addEventListener("keydown", function (event) {
     inputPrevDisplay.value = `type: ${event.type} val: ${key}`;
     appendCharacter(key);
 });
+function toggleDarkMode() {
+    const isEnabled = document.body.classList.toggle("dark");
+    // store in local storage
+    localStorage.setItem("darkModeStatus", isEnabled ? "enabled" : "disabled");
+} /* Darkmode Toggle */
 function appendCharacter(char) {
     console.log("appendChar: " + char);
     calculator.appendCurrExpression(char);
@@ -261,11 +281,3 @@ function updateDisplay() {
     // update prevExpression after calculate()
     // check what inputs are invalid
 }
-/* Darkmode Toggle */
-const sunMoonContainer = document.querySelector(".sun-moon-container");
-const toggleBtn = document.querySelector(".theme-toggle-button");
-toggleBtn.addEventListener("click", () => {
-    document.body.classList.toggle("dark");
-    const currentRotation = parseInt(getComputedStyle(sunMoonContainer).getPropertyValue("--rotation"));
-    sunMoonContainer.style.setProperty("--rotation", (currentRotation + 180).toString());
-});

@@ -1,5 +1,11 @@
 window.addEventListener("DOMContentLoaded", () => {
     updateDisplay();
+
+    let darkModeStatus = localStorage.getItem("darkModeStatus");
+    // check if darkModeSTATUS is set
+    if (darkModeStatus) {
+        if (darkModeStatus === "enabled") toggleDarkMode();
+    }
 });
 
 class Calculator {
@@ -291,14 +297,39 @@ const inputPrevDisplay = document.querySelector(
 
 const errorMessage = document.querySelector("#errorMessage") as HTMLElement;
 
+const sunMoonContainer = document.querySelector(
+    ".sun-moon-container"
+) as HTMLElement;
+
+// store darkmode status for page reload
+let darkMode = localStorage.getItem("darkModeStatus");
+const toggleBtn = document.querySelector(".theme-toggle-button") as HTMLElement;
+
+toggleBtn.addEventListener("click", () => {
+    toggleDarkMode();
+    const currentRotation: number = parseInt(
+        getComputedStyle(sunMoonContainer).getPropertyValue("--rotation")
+    );
+    sunMoonContainer.style.setProperty(
+        "--rotation",
+        (currentRotation + 180).toString()
+    );
+});
+
 // check for user inputs from keyboard
-inputDisplay.addEventListener("keydown", function (event: any) {
+inputDisplay.addEventListener("keydown", function (event: KeyboardEvent) {
     event.preventDefault();
     const key: string = event.key; // "a", "1", "Shift", etc.
     inputPrevDisplay.value = `type: ${event.type} val: ${key}`;
-    
+
     appendCharacter(key);
 });
+
+function toggleDarkMode(): void {
+    const isEnabled: boolean = document.body.classList.toggle("dark");
+    // store in local storage
+    localStorage.setItem("darkModeStatus", isEnabled ? "enabled" : "disabled");
+} /* Darkmode Toggle */
 
 function appendCharacter(char: string): void {
     console.log("appendChar: " + char);
@@ -308,7 +339,7 @@ function appendCharacter(char: string): void {
 
 function updateDisplay(): void {
     inputDisplay.value = calculator.getCurrExpression();
-   // inputPrevDisplay.value = `${calculator.getPrevExpression()} = ${calculator.getResult()}`;
+    // inputPrevDisplay.value = `${calculator.getPrevExpression()} = ${calculator.getResult()}`;
     errorMessage.innerHTML = calculator.getExpressionError();
 
     // toggle error message visibility
@@ -324,22 +355,3 @@ function updateDisplay(): void {
     // update prevExpression after calculate()
     // check what inputs are invalid
 }
-
-/* Darkmode Toggle */
-const sunMoonContainer = document.querySelector(
-    ".sun-moon-container"
-) as HTMLElement;
-
-const toggleBtn = document.querySelector(".theme-toggle-button") as HTMLElement;
-
-toggleBtn.addEventListener("click", () => {
-    document.body.classList.toggle("dark");
-
-    const currentRotation: number = parseInt(
-        getComputedStyle(sunMoonContainer).getPropertyValue("--rotation")
-    );
-    sunMoonContainer.style.setProperty(
-        "--rotation",
-        (currentRotation + 180).toString()
-    );
-});
