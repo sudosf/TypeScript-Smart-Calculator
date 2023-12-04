@@ -1,13 +1,17 @@
-/* Variables */
 body {
+  /* Variables */
   --accent-color: #ffd900;
-  --background-color: $primary-bg-color;
-  --text-color: $primary-text-color;
-  --button-text-color: $primary-bg-color;
-  --border-color: rgba(179, 179, 179, 0.445);
-  --transition-delay: 1s;
+  --background-color: #f6fdff;
+  --text-color: #2e2e2e;
+  --button-text-color: #2e2e2e;
+  --button-background-color: #fff;
+  --button-disabled-background-color: rgba(0, 0, 0, 0.475);
+  --border-color: rgba(178, 107, 107, 0.445);
+  --box-shadow-color: rgba(109, 109, 109, 0.274);
+  --border-size: 0.1em;
+  --transition-delay: 1s
   font-family: Helvetica, Arial, sans-serif;
-  font-size: 1rem;
+  font-size: 1em;
   margin-top: 1rem;
   transition: var(--transition-delay);
   background-color: var(--background-color);
@@ -20,7 +24,7 @@ body.dark {
   --text-color: #333;
 }
 body.dark h1 {
-  color: white;
+  color: var(--button-background-color);
 }
 body.dark main, body.dark .card,
 body.dark .card-body {
@@ -31,11 +35,17 @@ body.dark button.equal {
   color: var(--background-color);
 }
 body.dark .darkmode-container {
-  box-shadow: 0 5px 1px 2px rgba(109, 109, 109, 0.274); /* Adjust as needed */
+  box-shadow: 0 0.1em 0.1em var(--box-shadow-color); /* Adjust as needed */
+}
+body.dark .sun {
+  opacity: 0;
+}
+body.dark .moon {
+  opacity: 1;
 }
 
 .card {
-  border: 1px solid grey;
+  border: var(--border-size) solid var(--border-color);
   border-radius: 0.2em;
 }
 
@@ -51,15 +61,15 @@ main h1 {
 }
 
 .calc-container {
-  border: 1px solid gray;
+  border: var(--border-size) solid var(--border-color);
   position: relative;
   align-items: center;
   width: 100%;
   max-width: 25rem;
   border-radius: 0.3rem;
   padding: 1rem 1.5rem;
-  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.05);
-  border: 1px solid var(--border-color);
+  box-shadow: 0 1em 2em rgba(0, 0, 0, 0.05);
+  border: var(--border-size) solid var(--border-color);
   -webkit-background-clip: padding-box; /* for Safari */
   background-clip: padding-box; /* for IE9+, Firefox 4+, Opera, Chrome */
 }
@@ -74,9 +84,9 @@ main h1 {
   outline: none;
   text-align: right;
   margin-bottom: 10px;
-  font-size: 25px;
+  font-size: 1.5em;
   color: #000e1a;
-  border: 1px solid var(--border-color);
+  border: var(--border-size) solid var(--border-color);
   -webkit-background-clip: padding-box; /* for Safari */
   background-clip: padding-box; /* for IE9+, Firefox 4+, Opera, Chrome */
   border-top: none;
@@ -90,43 +100,43 @@ main h1 {
   text-align: right;
   font-size: 15px;
   color: #000e1a;
-  border: 1px solid var(--border-color);
+  border: var(--border-size) solid var(--border-color);
   -webkit-background-clip: padding-box; /* for Safari */
   background-clip: padding-box; /* for IE9+, Firefox 4+, Opera, Chrome */
   border-bottom: none;
 }
 
-.btns {
+.buttons-container {
   display: grid;
   grid-gap: 0.25em;
   grid-template-columns: repeat(4, 1fr);
 }
-.btns button {
+.buttons-container button {
   padding: 0.5em 1.5em;
   border-radius: 0.3em;
-  border: none;
+  border: 0.1em solid var(--border-color);
   font-size: 1em;
   cursor: pointer;
-  background-color: #eee;
+  background-color: var(--button-background-color);
 }
-.btns button.equal {
-  background-color: #2a2c30;
+.buttons-container button.equal {
+  background-color: var(--text-color);
   color: var(--accent-color);
 }
-.btns button:active {
+.buttons-container button:active {
   transform: scale(0.99);
 }
-.btns button:disabled {
-  color: rgba(0, 0, 0, 0.475);
+.buttons-container button:disabled {
+  color: var(--button-disabled-background-color);
   opacity: 0.6;
   cursor: not-allowed;
 }
-.btns .operator {
+.buttons-container .operator {
   color: #2f9fff;
 }
 
 .error {
-  border: 1px solid;
+  border: var(--border-size) solid;
   padding: 1em 2em;
   background-repeat: no-repeat;
   background-position: 10px center;
@@ -146,13 +156,13 @@ main h1 {
   display: flex;
   justify-content: center;
   align-items: center;
-  cursor: pointer;
   padding: 0.5em 1em;
   border-radius: 0.3em;
   border: none;
   outline: none;
   transition: var(--transition-delay);
   transform: scale(1);
+  cursor: pointer;
 }
 
 .theme-toggle-button .icon {
@@ -171,7 +181,7 @@ main h1 {
   padding: 1rem 1.3rem;
   width: 60%;
   margin: auto;
-  box-shadow: 2px 3px 5px rgba(109, 109, 109, 0.274); /* Adjust as needed */
+  box-shadow: 0 0.1em 0.1em var(--box-shadow-color); /* Adjust as needed */
 }
 
 .sun-moon-container {
@@ -190,17 +200,9 @@ main h1 {
   opacity: 1;
 }
 
-.dark .sun {
-  opacity: 0;
-}
-
 .moon {
   opacity: 0;
   transform: rotate(180deg);
-}
-
-.dark .moon {
-  opacity: 1;
 }
 
 /*# sourceMappingURL=styles.css.map */
