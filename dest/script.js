@@ -235,7 +235,7 @@ const errorMessage = document.querySelector("#errorMessage");
 inputDisplay.addEventListener("keydown", function (event) {
     event.preventDefault();
     const key = event.key; // "a", "1", "Shift", etc.
-    console.log(key);
+    inputPrevDisplay.value = event.type;
     appendCharacter(key);
 });
 function appendCharacter(char) {
@@ -245,7 +245,7 @@ function appendCharacter(char) {
 }
 function updateDisplay() {
     inputDisplay.value = calculator.getCurrExpression();
-    inputPrevDisplay.value = `${calculator.getPrevExpression()} = ${calculator.getResult()}`;
+    // inputPrevDisplay.value = `${calculator.getPrevExpression()} = ${calculator.getResult()}`;
     errorMessage.innerHTML = calculator.getExpressionError();
     // toggle error message visibility
     if (calculator.getExpressionError() == "") {

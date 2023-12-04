@@ -292,10 +292,11 @@ const inputPrevDisplay = document.querySelector(
 const errorMessage = document.querySelector("#errorMessage") as HTMLElement;
 
 // check for user inputs from keyboard
-inputDisplay.addEventListener("keydown", function (event: KeyboardEvent) {
+inputDisplay.addEventListener("keydown", function (event: any) {
     event.preventDefault();
     const key: string = event.key; // "a", "1", "Shift", etc.
-    console.log(key);
+    inputPrevDisplay.value = event.type;
+    
     appendCharacter(key);
 });
 
@@ -307,7 +308,7 @@ function appendCharacter(char: string): void {
 
 function updateDisplay(): void {
     inputDisplay.value = calculator.getCurrExpression();
-    inputPrevDisplay.value = `${calculator.getPrevExpression()} = ${calculator.getResult()}`;
+   // inputPrevDisplay.value = `${calculator.getPrevExpression()} = ${calculator.getResult()}`;
     errorMessage.innerHTML = calculator.getExpressionError();
 
     // toggle error message visibility
