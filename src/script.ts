@@ -2,7 +2,6 @@ window.addEventListener("DOMContentLoaded", () => {
     updateDisplay();
 });
 
-// export class for testing
 class Calculator {
     private currExpression: string;
     private prevExpression: string;
@@ -97,6 +96,9 @@ class Calculator {
         } else if (!this.isNumber(expression)) {
             this.expressionError = "invalid square operation"
             return 0;
+        } else if ( parseFloat(expression) < 0 ) {
+            this.expressionError = "invalid negative square operation";
+
         }
 
         const result: number = Math.sqrt(parseFloat(expression));

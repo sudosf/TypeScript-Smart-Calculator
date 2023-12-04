@@ -1,10 +1,7 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.Calculator = void 0;
 window.addEventListener("DOMContentLoaded", () => {
     updateDisplay();
 });
-// export class for testing
 class Calculator {
     constructor() {
         this.currExpression = "";
@@ -226,7 +223,6 @@ class Calculator {
         return replacement + myString.slice(1);
     }
 } // Calculator class
-exports.Calculator = Calculator;
 let calculator = new Calculator();
 // current expression display
 const inputDisplay = document.querySelector("#calc-display");
