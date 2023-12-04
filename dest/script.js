@@ -162,12 +162,11 @@ class Calculator {
                     this.result = sqrtResult;
                     break;
                 default:
-                    this.currExpression === ""
-                        ? (this.currExpression = char)
-                        : (this.currExpression += char);
+                    this.currExpression += char;
+                    console.log("currExpression_append: " + this.currExpression);
                     break;
             }
-            updateDisplay();
+            // updateDisplay();
         }
         else {
             this.expressionError = "please enter valid input";
@@ -234,11 +233,13 @@ const inputPrevDisplay = document.querySelector("#calc-prev-display");
 const errorMessage = document.querySelector("#errorMessage");
 // check for user inputs from keyboard
 inputDisplay.addEventListener("keydown", function (event) {
+    event.preventDefault();
     const key = event.key; // "a", "1", "Shift", etc.
-    // console.log(key);
+    console.log(key);
     appendCharacter(key);
 });
 function appendCharacter(char) {
+    console.log("appendChar: " + char);
     calculator.appendCurrExpression(char);
     updateDisplay();
 }

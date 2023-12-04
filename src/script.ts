@@ -199,13 +199,14 @@ class Calculator {
                     this.result = sqrtResult;
                     break;
                 default:
-                    this.currExpression === ""
-                        ? (this.currExpression = char)
-                        : (this.currExpression += char);
+                    this.currExpression += char;
 
+                    console.log(
+                        "currExpression_append: " + this.currExpression
+                    );
                     break;
             }
-            updateDisplay();
+            // updateDisplay();
         } else {
             this.expressionError = "please enter valid input";
         }
@@ -292,12 +293,14 @@ const errorMessage = document.querySelector("#errorMessage") as HTMLElement;
 
 // check for user inputs from keyboard
 inputDisplay.addEventListener("keydown", function (event: KeyboardEvent) {
+    event.preventDefault();
     const key: string = event.key; // "a", "1", "Shift", etc.
-    // console.log(key);
+    console.log(key);
     appendCharacter(key);
 });
 
 function appendCharacter(char: string): void {
+    console.log("appendChar: " + char);
     calculator.appendCurrExpression(char);
     updateDisplay();
 }
