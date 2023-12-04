@@ -295,7 +295,7 @@ const errorMessage = document.querySelector("#errorMessage") as HTMLElement;
 inputDisplay.addEventListener("keydown", function (event: any) {
     event.preventDefault();
     const key: string = event.key; // "a", "1", "Shift", etc.
-    inputPrevDisplay.value = event.type;
+    inputPrevDisplay.value = `type: ${event.type} val: ${key}`;
     
     appendCharacter(key);
 });
