@@ -249,9 +249,8 @@ toggleBtn.addEventListener("click", () => {
 // check for user inputs from keyboard
 inputDisplay.addEventListener("keydown", function (event) {
     event.preventDefault();
-    const key = event.key; // "a", "1", "Shift", etc.
-    inputPrevDisplay.value = `type: ${event.type} val: ${key}`;
-    appendCharacter(key);
+    console.log('keyPressed: ' + event.key);
+    appendCharacter(event.key);
 });
 function toggleDarkMode() {
     const isEnabled = document.body.classList.toggle("dark");
@@ -259,25 +258,15 @@ function toggleDarkMode() {
     localStorage.setItem("darkModeStatus", isEnabled ? "enabled" : "disabled");
 } /* Darkmode Toggle */
 function appendCharacter(char) {
-    console.log("appendChar: " + char);
     calculator.appendCurrExpression(char);
     updateDisplay();
 }
 function updateDisplay() {
     inputDisplay.value = calculator.getCurrExpression();
-    // inputPrevDisplay.value = `${calculator.getPrevExpression()} = ${calculator.getResult()}`;
-    errorMessage.innerHTML = calculator.getExpressionError();
-    // toggle error message visibility
-    if (calculator.getExpressionError() == "") {
-        errorMessage.style.display = "none";
-    }
-    else {
-        errorMessage.style.display = "block";
-        setTimeout(function () {
-            $("#errorMessage").fadeOut("slow");
-        }, 5000); // <-- time in milliseconds
+    inputPrevDisplay.value = `${calculator.getPrevExpression()} = ${calculator.getResult()}`;
+    if (calculator.getExpressionError() !== "") {
+        inputPrevDisplay.value = calculator.getExpressionError();
     }
     // TODO:
-    // update prevExpression after calculate()
     // check what inputs are invalid
 }
