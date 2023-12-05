@@ -17,9 +17,9 @@
     <body>
         <header class="darkmode-container">
             <section class="sun-moon-container">
+                <!-- viewBox="min-x min-y width height" -->
                 <svg
                     class="sun"
-                    style="width: 24px; height: 24px"
                     viewBox="0 0 24 24"
                 >
                     <path
@@ -27,9 +27,9 @@
                     />
                 </svg>
 
+                <!-- viewBox="min-x min-y width height" -->
                 <svg
                     class="moon"
-                    style="width: 24px; height: 24px"
                     viewBox="0 0 24 24"
                 >
                     <path
@@ -72,7 +72,13 @@
                     >
                         AC
                     </button>
-                    <button onclick="appendCharacter('Backspace')" class="operator" type="button">DEL</button>
+                    <button
+                        onclick="appendCharacter('Backspace')"
+                        class="operator"
+                        type="button"
+                    >
+                        DEL
+                    </button>
 
                     <button onclick="appendCharacter('7')" type="button">
                         7
@@ -131,13 +137,8 @@
                     <button onclick="appendCharacter('.')" type="button">
                         .
                     </button>
-                    <button
-                        id="equal"
-                        onclick="appendCharacter('=')"
-                        type="button"
-                        class="operator equal"
-                    >
-                        =
+                    <button onclick="appendCharacter('pie')" type="button">
+                        π
                     </button>
                     <button
                         onclick="appendCharacter('+')"
@@ -147,27 +148,27 @@
                         +
                     </button>
 
-                    <button
-                        onclick="appendCharacter('pie')"
-                        type="button"
-                    >
-                        π
-                    </button>
 
-                    <button
-                        onclick="appendCharacter('sqrt')"
-                        type="button"
-                    >
+                    <button onclick="appendCharacter('sqrt')" type="button">
                         √
                     </button>
                     <button onclick="appendCharacter('^')" type="button">
                         ^
                     </button>
-
+                    <button onclick="appendCharacter('%')" type="button" disabled>%</button>
+                    <button
+                        id="equal"
+                        onclick="appendCharacter('=')"
+                        type="button"
+                        class="operator equal"
+                    >
+                        =
+                    </button>
+                    
                     <button type="button" disabled>sin</button>
+                    
                     <button type="button" disabled>ln</button>
                     <button type="button" disabled>cos</button>
-
                     <button type="button" disabled>log</button>
                     <button type="button" disabled>tan</button>
                 </section>

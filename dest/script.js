@@ -236,7 +236,6 @@ let calculator = new Calculator();
 const inputDisplay = document.querySelector("#calc-display");
 // previous expression display
 const inputPrevDisplay = document.querySelector("#calc-prev-display");
-const errorMessage = document.querySelector("#errorMessage");
 const sunMoonContainer = document.querySelector(".sun-moon-container");
 // store darkmode status for page reload
 let darkMode = localStorage.getItem("darkModeStatus");
@@ -244,7 +243,7 @@ const toggleBtn = document.querySelector(".theme-toggle-button");
 toggleBtn.addEventListener("click", () => {
     toggleDarkMode();
     const currentRotation = parseInt(getComputedStyle(sunMoonContainer).getPropertyValue("--rotation"));
-    sunMoonContainer.style.setProperty("--rotation", (currentRotation + 180).toString());
+    sunMoonContainer.style.setProperty("--rotation", ((currentRotation + 180)).toString());
 });
 // check for user inputs from keyboard
 inputDisplay.addEventListener("keydown", function (event) {

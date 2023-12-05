@@ -295,7 +295,6 @@ const inputPrevDisplay = document.querySelector(
     "#calc-prev-display"
 ) as HTMLInputElement;
 
-const errorMessage = document.querySelector("#errorMessage") as HTMLElement;
 
 const sunMoonContainer = document.querySelector(
     ".sun-moon-container"
@@ -312,7 +311,7 @@ toggleBtn.addEventListener("click", () => {
     );
     sunMoonContainer.style.setProperty(
         "--rotation",
-        (currentRotation + 180).toString()
+        ((currentRotation + 180)).toString()
     );
 });
 

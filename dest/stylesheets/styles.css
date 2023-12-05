@@ -9,7 +9,7 @@ body {
   --border-color: rgba(178, 107, 107, 0.445);
   --box-shadow-color: rgba(109, 109, 109, 0.274);
   --border-size: 0.1em;
-  --transition-delay: 1s
+  --transition-delay: 1s;
   font-family: Helvetica, Arial, sans-serif;
   font-size: 1em;
   margin-top: 1rem;
@@ -26,7 +26,8 @@ body.dark {
 body.dark h1 {
   color: var(--button-background-color);
 }
-body.dark main, body.dark .card,
+body.dark main,
+body.dark .card,
 body.dark .card-body {
   background-color: var(--background-color);
 }
@@ -35,7 +36,7 @@ body.dark button.equal {
   color: var(--background-color);
 }
 body.dark .darkmode-container {
-  box-shadow: 0 0.1em 0.1em var(--box-shadow-color); /* Adjust as needed */
+  box-shadow: 0 0.1em 0.1em 0.1em var(--box-shadow-color);
 }
 body.dark .sun {
   opacity: 0;
@@ -53,8 +54,8 @@ main {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
   margin: 2em;
+  border: 1px solid var(--border-color);
 }
 main h1 {
   font-size: 1.5rem;
@@ -63,13 +64,14 @@ main h1 {
 .calc-container {
   display: flex;
   flex-direction: column;
+  align-items: center;
   border: var(--border-size) solid var(--border-color);
   position: relative;
   width: 100%;
-  max-width: 25rem;
+  max-width: 40em;
   border-radius: 0.3rem;
   padding: 1rem 1.5rem;
-  box-shadow: 0 1em 2em var(--box-shadow-color);
+  box-shadow: 0 1em 2em 0.1em var(--box-shadow-color);
   border: var(--border-size) solid var(--border-color);
   -webkit-background-clip: padding-box; /* for Safari */
   background-clip: padding-box; /* for IE9+, Firefox 4+, Opera, Chrome */
@@ -79,7 +81,6 @@ main h1 {
 }
 
 .input-display {
-  margin: 0;
   height: 1.5em;
   width: 100%;
   outline: none;
@@ -94,7 +95,6 @@ main h1 {
 }
 
 .input-result {
-  margin: 0;
   height: 1.2em;
   width: 100%;
   outline: none;
@@ -123,9 +123,10 @@ main h1 {
 .buttons-container button.equal {
   background-color: var(--text-color);
   color: var(--accent-color);
+  grid-row: span 2;
 }
 .buttons-container button:active {
-  transform: scale(0.99);
+  transform: scale(0.9);
 }
 .buttons-container button:disabled {
   color: var(--button-disabled-background-color);
@@ -136,33 +137,16 @@ main h1 {
   color: #2f9fff;
 }
 
-.error {
-  border: var(--border-size) solid;
-  padding: 1em 2em;
-  background-repeat: no-repeat;
-  background-position: 10px center;
-  display: none;
-}
-
-.error {
-  color: #d8000c;
-  background-color: #ffbaba;
-  background-image: url("/public/GnyDvKN.png");
-}
-
 /* Darkmode styles */
 .theme-toggle-button {
   background-color: var(--accent-color);
   color: var(--button-text-color);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 0.5em 1em;
+  font-size: 0.9em;
+  padding: 1em 1.5em;
   border-radius: 0.3em;
   border: none;
   outline: none;
   transition: var(--transition-delay);
-  transform: scale(1);
   cursor: pointer;
 }
 
@@ -172,7 +156,7 @@ main h1 {
 
 .theme-toggle-button:hover,
 .theme-toggle-button:focus {
-  transform: scale(1.1);
+  transform: scale(1.15);
 }
 
 .darkmode-container {
@@ -182,7 +166,7 @@ main h1 {
   padding: 1rem 1.3rem;
   width: 60%;
   margin: auto;
-  box-shadow: 0 0.1em 0.1em var(--box-shadow-color); /* Adjust as needed */
+  box-shadow: 0 0.1em 0.1em 0.1em var(--box-shadow-color); /* Adjust as needed */
 }
 
 .sun-moon-container {
@@ -195,6 +179,8 @@ main h1 {
 .moon {
   fill: var(--accent-color);
   transition: opacity var(--transition-delay);
+  width: 1.5em;
+  height: auto;
 }
 
 .sun {
@@ -203,7 +189,6 @@ main h1 {
 
 .moon {
   opacity: 0;
-  transform: rotate(180deg);
 }
 
 /*# sourceMappingURL=styles.css.map */
