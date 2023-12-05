@@ -185,12 +185,15 @@ class Calculator {
                 case "Backspace":
                     this.currExpression = this.currExpression.slice(0, -1);
                     break;
-                case "pie":
+                case "pi":
                     this.currExpression += Math.PI.toString();
                     break;
                 case "sqrt":
                     const sqrtResult = this.resolveSqrt(this.currExpression);
                     this.setResult(sqrtResult);
+                    break;
+                case "%":
+                    this.currExpression = this.convertToPercentage(this.currExpression).toString();
                     break;
                 default:
                     this.isOperator(char)
@@ -229,6 +232,9 @@ class Calculator {
             this.isValidKey(input) ||
             this.isCharNumber(input));
     } // isValidInput
+    convertToPercentage(numberInput) {
+        return parseFloat(numberInput) / 100;
+    }
     /* private helper functions */
     isOperator(char) {
         const operators = ["+", "-", "*", "/"];
@@ -244,8 +250,9 @@ class Calculator {
             "^",
             ".",
             "Enter",
-            "pie",
+            "pi",
             "sqrt",
+            "%",
             " ",
             "Space",
         ];
