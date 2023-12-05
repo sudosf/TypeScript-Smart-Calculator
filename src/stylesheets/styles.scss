@@ -65,7 +65,7 @@ main {
     flex-direction: column;
     align-items: center;
     margin: 2em;
-    border: 1px solid var(--border-color);
+    // border: 1px solid var(--border-color);
 
     h1 {
         font-size: 1.5rem;
@@ -142,6 +142,10 @@ main {
 
     button:active {
         transform: scale(0.9);
+    }
+
+    button:hover {
+        transform: scale(1.1);
     }
 
     button:disabled {

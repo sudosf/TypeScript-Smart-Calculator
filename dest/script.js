@@ -13,9 +13,10 @@ class Calculator {
         this.currExpression = "";
         this.prevExpression = "0";
         this.expressionError = "";
-        this.result = 0;
+        this.result = "";
     } // constructor
     calculate(expression = this.currExpression) {
+        expression = expression.replace(/\s/g, ""); // remove whitespace
         // evaluate expression inside parenthesis
         expression = this.resolveParenthesis(expression);
         // evaluate exponents
@@ -25,8 +26,27 @@ class Calculator {
         // evaluate addition and subtraction
         expression = this.resolveAddAndSub(expression);
         this.currExpression = expression;
-        return parseFloat(this.currExpression);
+        console.log("expression: " + expression);
+        this.validateResult(expression);
+        return this.currExpression;
     } // calculate
+    validateResult(expression) {
+        console.log("isValidResult: " + this.isExpressionNumber(expression));
+        // check if any errors where detected
+        // update expression if
+        // no error message is set
+        if (expression.length === 0) {
+            if (this.isExpressionErrorEmpty())
+                this.expressionError = "please enter an expression";
+        }
+        else if (!this.isExpressionNumber(expression)) {
+            if (this.isExpressionErrorEmpty())
+                this.expressionError = "ERROR";
+        }
+    } // validateResult
+    isExpressionErrorEmpty() {
+        return this.expressionError === "";
+    }
     resolveParenthesis(expression) {
         while (expression.includes("(") || expression.includes(")")) {
             const startIndex = expression.lastIndexOf("(");
@@ -39,7 +59,7 @@ class Calculator {
             // get sub-expression inside parenthesis
             const subExpression = expression.slice(startIndex + 1, endIndex);
             let result = "";
-            if (this.isNumber(subExpression)) {
+            if (this.isCharNumber(subExpression)) {
                 result = subExpression;
             }
             else {
@@ -60,8 +80,8 @@ class Calculator {
             const [base, exponent] = expression
                 .split("^")
                 .map(parseFloat);
-            if (!this.isNumber(base.toString()) ||
-                !this.isNumber(exponent.toString())) {
+            if (!this.isCharNumber(base.toString()) ||
+                !this.isCharNumber(exponent.toString())) {
                 this.expressionError = "invalid expression";
                 break;
             }
@@ -74,18 +94,18 @@ class Calculator {
     resolveSqrt(expression) {
         if (expression === "") {
             this.expressionError = "empty expression";
-            return 0;
+            return "";
         }
-        else if (!this.isNumber(expression)) {
+        else if (!this.isCharNumber(expression)) {
             this.expressionError = "invalid square operation";
-            return 0;
+            return "";
         }
         else if (parseFloat(expression) < 0) {
             this.expressionError = "invalid negative square operation";
         }
         const result = Math.sqrt(parseFloat(expression));
         this.currExpression = result.toString();
-        return result;
+        return result.toString();
     } // resolveSqrt
     resolveMulAndDiv(expression) {
         while (expression.match(/[*/]/)) {
@@ -112,10 +132,14 @@ class Calculator {
     } //resolveMulAndDiv
     resolveAddAndSub(expression) {
         // Perform addition and subtraction
-        while (expression.match(/[+-]/)) {
-            const match = expression.match(/([\d.]+)([+-])([\d.]+)/);
+        while (expression.match(/[+\-]/)) {
+            const match = expression.match(/([\d.]+)([+\-])([\d.]+)/);
             if (match) {
                 let [_, operand1, operator, operand2] = match;
+                if (!operand1 || !operand2) {
+                    this.expressionError = "incomplete expression";
+                    break;
+                }
                 // if expression has a preceding negative number
                 // negate operand and remove operator
                 // specifying negative/positive value
@@ -144,17 +168,18 @@ class Calculator {
         console.log("add: " + expression);
         return expression;
     } // resolveAddAndSub
-    appendCurrExpression(char) {
+    onInputReceived(char) {
         if (this.isValidInput(char)) {
             this.expressionError = ""; // reset error message
             switch (char) {
                 case "Enter":
                 case "=":
-                    this.prevExpression = this.currExpression;
+                    this.setPrevExpression(this.currExpression);
                     const result = this.calculate();
-                    this.result = result;
+                    this.setResult(result);
                     break;
                 case "AC":
+                    // use function or variable?
                     this.currExpression = "";
                     break;
                 case "Backspace":
@@ -165,19 +190,19 @@ class Calculator {
                     break;
                 case "sqrt":
                     const sqrtResult = this.resolveSqrt(this.currExpression);
-                    this.result = sqrtResult;
+                    this.setResult(sqrtResult);
                     break;
                 default:
-                    this.currExpression += char;
-                    console.log("currExpression_append: " + this.currExpression);
+                    this.isOperator(char)
+                        ? (this.currExpression += ` ${char} `)
+                        : (this.currExpression += char);
                     break;
             }
-            // updateDisplay();
         }
         else {
             this.expressionError = "please enter valid input";
         }
-    } // appendCurrExpression
+    } // onInputReceived
     /* Getters */
     getCurrExpression() {
         return this.currExpression;
@@ -202,7 +227,7 @@ class Calculator {
     isValidInput(input) {
         return (this.isOperator(input) ||
             this.isValidKey(input) ||
-            this.isNumber(input));
+            this.isCharNumber(input));
     } // isValidInput
     /* private helper functions */
     isOperator(char) {
@@ -221,12 +246,18 @@ class Calculator {
             "Enter",
             "pie",
             "sqrt",
+            " ",
+            "Space",
         ];
         return keys.includes(char);
     } // isValidKey
-    isNumber(char) {
+    isCharNumber(char) {
         return typeof parseFloat(char) === "number" && !isNaN(parseFloat(char));
-    } // isNumber
+    } // isCharNumber
+    isExpressionNumber(expression) {
+        const matchResult = expression.match(/[0-9+\-*/.]+/);
+        return matchResult ? true : false;
+    } //isExpressionNumber
     replaceFirstChar(myString, replacement) {
         return replacement + myString.slice(1);
     }
@@ -243,21 +274,21 @@ const toggleBtn = document.querySelector(".theme-toggle-button");
 toggleBtn.addEventListener("click", () => {
     toggleDarkMode();
     const currentRotation = parseInt(getComputedStyle(sunMoonContainer).getPropertyValue("--rotation"));
-    sunMoonContainer.style.setProperty("--rotation", ((currentRotation + 180)).toString());
+    sunMoonContainer.style.setProperty("--rotation", (currentRotation + 180).toString());
 });
 // check for user inputs from keyboard
 inputDisplay.addEventListener("keydown", function (event) {
     event.preventDefault();
-    console.log('keyPressed: ' + event.key);
-    appendCharacter(event.key);
+    console.log("keyPressed: " + event.key);
+    onKeyPressed(event.key);
 });
 function toggleDarkMode() {
     const isEnabled = document.body.classList.toggle("dark");
     // store in local storage
     localStorage.setItem("darkModeStatus", isEnabled ? "enabled" : "disabled");
 } /* Darkmode Toggle */
-function appendCharacter(char) {
-    calculator.appendCurrExpression(char);
+function onKeyPressed(char) {
+    calculator.onInputReceived(char);
     updateDisplay();
 }
 function updateDisplay() {

@@ -13,16 +13,17 @@ class Calculator {
     private prevExpression: string;
     private expressionError: string;
 
-    private result: number;
+    private result: string;
 
     public constructor() {
         this.currExpression = "";
         this.prevExpression = "0";
         this.expressionError = "";
-        this.result = 0;
+        this.result = "";
     } // constructor
 
-    public calculate(expression: string = this.currExpression): number {
+    public calculate(expression: string = this.currExpression): string {
+        expression = expression.replace(/\s/g, ""); // remove whitespace
         // evaluate expression inside parenthesis
         expression = this.resolveParenthesis(expression);
         // evaluate exponents
@@ -33,9 +34,28 @@ class Calculator {
         expression = this.resolveAddAndSub(expression);
 
         this.currExpression = expression;
+        console.log("expression: " + expression);
 
-        return parseFloat(this.currExpression);
+        this.validateResult(expression);
+        return this.currExpression;
     } // calculate
+
+    public validateResult(expression: string) {
+        console.log("isValidResult: " + this.isExpressionNumber(expression));
+        // check if any errors where detected
+        // update expression if
+        // no error message is set
+        if (expression.length === 0) {
+            if (this.isExpressionErrorEmpty())
+                this.expressionError = "please enter an expression";
+        } else if (!this.isExpressionNumber(expression)) {
+            if (this.isExpressionErrorEmpty()) this.expressionError = "ERROR";
+        }
+    } // validateResult
+
+    public isExpressionErrorEmpty(): boolean {
+        return this.expressionError === "";
+    }
 
     public resolveParenthesis(expression: string): string {
         while (expression.includes("(") || expression.includes(")")) {
@@ -55,7 +75,7 @@ class Calculator {
             );
 
             let result: string = "";
-            if (this.isNumber(subExpression)) {
+            if (this.isCharNumber(subExpression)) {
                 result = subExpression;
             } else {
                 result = this.calculate(subExpression).toString();
@@ -80,8 +100,8 @@ class Calculator {
                 .map(parseFloat);
 
             if (
-                !this.isNumber(base.toString()) ||
-                !this.isNumber(exponent.toString())
+                !this.isCharNumber(base.toString()) ||
+                !this.isCharNumber(exponent.toString())
             ) {
                 this.expressionError = "invalid expression";
                 break;
@@ -95,20 +115,20 @@ class Calculator {
         return expression;
     } // resolveExponent
 
-    public resolveSqrt(expression: string): number {
+    public resolveSqrt(expression: string): string {
         if (expression === "") {
             this.expressionError = "empty expression";
-            return 0;
-        } else if (!this.isNumber(expression)) {
+            return "";
+        } else if (!this.isCharNumber(expression)) {
             this.expressionError = "invalid square operation";
-            return 0;
+            return "";
         } else if (parseFloat(expression) < 0) {
             this.expressionError = "invalid negative square operation";
         }
 
         const result: number = Math.sqrt(parseFloat(expression));
         this.currExpression = result.toString();
-        return result;
+        return result.toString();
     } // resolveSqrt
 
     public resolveMulAndDiv(expression: string): string {
@@ -140,11 +160,16 @@ class Calculator {
 
     public resolveAddAndSub(expression: string): string {
         // Perform addition and subtraction
-        while (expression.match(/[+-]/)) {
-            const match = expression.match(/([\d.]+)([+-])([\d.]+)/);
+        while (expression.match(/[+\-]/)) {
+            const match = expression.match(/([\d.]+)([+\-])([\d.]+)/);
 
             if (match) {
                 let [_, operand1, operator, operand2]: string[] = match;
+
+                if (!operand1 || !operand2) {
+                    this.expressionError = "incomplete expression";
+                    break;
+                }
 
                 // if expression has a preceding negative number
                 // negate operand and remove operator
@@ -178,18 +203,18 @@ class Calculator {
         return expression;
     } // resolveAddAndSub
 
-    public appendCurrExpression(char: string): void {
+    public onInputReceived(char: string): void {
         if (this.isValidInput(char)) {
             this.expressionError = ""; // reset error message
             switch (char) {
                 case "Enter":
                 case "=":
-                    this.prevExpression = this.currExpression;
-
-                    const result: number = this.calculate();
-                    this.result = result;
+                    this.setPrevExpression(this.currExpression);
+                    const result: string = this.calculate();
+                    this.setResult(result);
                     break;
                 case "AC":
+                    // use function or variable?
                     this.currExpression = "";
                     break;
                 case "Backspace":
@@ -199,24 +224,21 @@ class Calculator {
                     this.currExpression += Math.PI.toString();
                     break;
                 case "sqrt":
-                    const sqrtResult: number = this.resolveSqrt(
+                    const sqrtResult: string = this.resolveSqrt(
                         this.currExpression
                     );
-                    this.result = sqrtResult;
+                    this.setResult(sqrtResult);
                     break;
                 default:
-                    this.currExpression += char;
-
-                    console.log(
-                        "currExpression_append: " + this.currExpression
-                    );
+                    this.isOperator(char)
+                        ? (this.currExpression += ` ${char} `)
+                        : (this.currExpression += char);
                     break;
             }
-            // updateDisplay();
         } else {
             this.expressionError = "please enter valid input";
         }
-    } // appendCurrExpression
+    } // onInputReceived
 
     /* Getters */
     public getCurrExpression(): string {
@@ -240,7 +262,7 @@ class Calculator {
         this.prevExpression = this.currExpression;
     } // setPrevExpression
 
-    public setResult(result: number) {
+    public setResult(result: string) {
         this.result = result;
     } //setResult
 
@@ -249,7 +271,7 @@ class Calculator {
         return (
             this.isOperator(input) ||
             this.isValidKey(input) ||
-            this.isNumber(input)
+            this.isCharNumber(input)
         );
     } // isValidInput
 
@@ -271,13 +293,20 @@ class Calculator {
             "Enter",
             "pie",
             "sqrt",
+            " ",
+            "Space",
         ];
         return keys.includes(char);
     } // isValidKey
 
-    private isNumber(char: string): boolean {
+    private isCharNumber(char: string): boolean {
         return typeof parseFloat(char) === "number" && !isNaN(parseFloat(char));
-    } // isNumber
+    } // isCharNumber
+
+    private isExpressionNumber(expression: string): boolean {
+        const matchResult = expression.match(/[0-9+\-*/.]+/);
+        return matchResult ? true : false;
+    } //isExpressionNumber
 
     private replaceFirstChar(myString: string, replacement: string): string {
         return replacement + myString.slice(1);
@@ -295,7 +324,6 @@ const inputPrevDisplay = document.querySelector(
     "#calc-prev-display"
 ) as HTMLInputElement;
 
-
 const sunMoonContainer = document.querySelector(
     ".sun-moon-container"
 ) as HTMLElement;
@@ -311,15 +339,15 @@ toggleBtn.addEventListener("click", () => {
     );
     sunMoonContainer.style.setProperty(
         "--rotation",
-        ((currentRotation + 180)).toString()
+        (currentRotation + 180).toString()
     );
 });
 
 // check for user inputs from keyboard
 inputDisplay.addEventListener("keydown", function (event: KeyboardEvent) {
     event.preventDefault();
-    console.log('keyPressed: ' + event.key)
-    appendCharacter(event.key);
+    console.log("keyPressed: " + event.key);
+    onKeyPressed(event.key);
 });
 
 function toggleDarkMode(): void {
@@ -328,8 +356,8 @@ function toggleDarkMode(): void {
     localStorage.setItem("darkModeStatus", isEnabled ? "enabled" : "disabled");
 } /* Darkmode Toggle */
 
-function appendCharacter(char: string): void {
-    calculator.appendCurrExpression(char);
+function onKeyPressed(char: string): void {
+    calculator.onInputReceived(char);
     updateDisplay();
 }
 
